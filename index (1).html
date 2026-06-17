@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muskan — Patna, Bihar</title>
+<style>
+
+  /* ============ TOKENS ============ */
+  :root{
+    --paper:#f4f4f4;
+    --paper-2:#e6e6e6;
+    --ink:#2e2e2e;
+    --ink-soft:#5a5a5a;
+    --line:#d6d6d6;
+    --line-strong:#828282;
+    --white:#ffffff;
+    --accent:#4a90e2;
+    --accent-dark:#3a76c2;
+    --shadow-light: -8px -8px 16px rgba(255,255,255,0.85);
+    --shadow-dark: 8px 8px 18px rgba(0,0,0,0.10);
+    --shadow-dark-strong: 10px 10px 22px rgba(0,0,0,0.16);
+    --serif: "Source Serif 4","Iowan Old Style","Palatino Linotype",Georgia,serif;
+    --sans: "Inter","Helvetica Neue",Arial,sans-serif;
+    --mono: "JetBrains Mono","Courier New",monospace;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{background:var(--accent);color:var(--white);}
+
+  a{color:inherit;text-decoration:none;}
+
+  /* faint ledger grid texture across whole page */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    background-image:
+      repeating-linear-gradient(to bottom, rgba(0,0,0,0.025) 0px, rgba(0,0,0,0.025) 1px, transparent 1px, transparent 36px);
+    opacity:0.6;
+  }
+
+  /* ============ SCROLLBAR ============ */
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--paper);}
+  ::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:6px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--ink-soft);}
+
+  /* ============ PROGRESS RAIL ============ */
+  .progress-rail{
+    position:fixed;
+    top:0; left:0;
+    height:3px;
+    width:0%;
+    background:var(--accent);
+    z-index:1000;
+    transition:width 0.08s linear;
+  }
+
+  /* ============ NAV ============ */
+  header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:500;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px 6vw;
+    background:rgba(244,244,242,0.7);
+    backdrop-filter:blur(10px) saturate(120%);
+    -webkit-backdrop-filter:blur(10px) saturate(120%);
+    border-bottom:1px solid transparent;
+    transition:border-color 0.4s ease, background 0.4s ease;
+  }
+  header.scrolled{
+    border-bottom:1px solid var(--line);
+    background:rgba(244,244,242,0.92);
+  }
+  .brand{
+    font-family:var(--serif);
+    font-size:1.05rem;
+    letter-spacing:0.04em;
+    font-weight:600;
+  }
+  .brand span{color:var(--ink-soft); font-weight:400;}
+  nav ul{
+    display:flex;
+    gap:2.6vw;
+    list-style:none;
+  }
+  nav a{
+    font-size:0.78rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    position:relative;
+    padding-bottom:4px;
+  }
+  nav a::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:0;
+    width:0%;
+    height:1px;
+    background:var(--accent);
+    transition:width 0.3s ease;
+  }
+  nav a:hover{color:var(--ink);}
+  nav a:hover::after{width:100%;}
+  .nav-toggle{
+    display:none;
+    flex-direction:column;
+    gap:5px;
+    cursor:pointer;
+    z-index:600;
+    padding:6px;
+  }
+  .nav-toggle span{
+    width:24px; height:1.5px;
+    background:var(--ink);
+    transition:transform 0.35s ease, opacity 0.35s ease, background 0.35s ease;
+    transform-origin:center;
+  }
+  .nav-toggle:hover span{
+    background:var(--accent);
+  }
+  .nav-toggle.active span:nth-child(1){
+    transform:translateY(6.5px) rotate(45deg);
+  }
+  .nav-toggle.active span:nth-child(2){
+    opacity:0;
+  }
+  .nav-toggle.active span:nth-child(3){
+    transform:translateY(-6.5px) rotate(-45deg);
+  }
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:0 6vw;
+    overflow:hidden;
+  }
+  .hero-eyebrow{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:28px;
+    opacity:0;
+    transform:translateY(10px);
+    animation:riseIn 0.9s 0.2s forwards ease;
+  }
+  .hero-eyebrow::before{
+    content:"";
+    display:inline-block;
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--accent);
+    margin-right:10px;
+    vertical-align:middle;
+  }
+  h1.hero-title{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(3rem, 9vw, 7.2rem);
+    line-height:0.96;
+    letter-spacing:-0.01em;
+    color:var(--ink);
+  }
+  h1.hero-title .line{
+    display:block;
+    overflow:hidden;
+  }
+  h1.hero-title .line span{
+    display:block;
+    transform:translateY(110%);
+    animation:lineUp 0.9s forwards cubic-bezier(.2,.8,.2,1);
+  }
+  h1.hero-title .line:nth-child(1) span{animation-delay:0.35s;}
+  h1.hero-title .line:nth-child(2) span{animation-delay:0.5s;}
+  .hero-title .accent{
+    font-style:italic;
+    font-weight:400;
+    color:var(--ink-soft);
+  }
+  .hero-sub{
+    margin-top:34px;
+    max-width:540px;
+    font-size:1.05rem;
+    line-height:1.75;
+    color:var(--ink-soft);
+    opacity:0;
+    transform:translateY(10px);
+    animation:riseIn 0.9s 0.85s forwards ease;
+  }
+  .hero-meta{
+    margin-top:54px;
+    display:flex;
+    gap:48px;
+    flex-wrap:wrap;
+    opacity:0;
+    transform:translateY(10px);
+    animation:riseIn 0.9s 1.05s forwards ease;
+  }
+  .hero-meta div{
+    font-family:var(--mono);
+    font-size:0.7rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--line-strong);
+  }
+  .hero-meta strong{
+    display:block;
+    font-family:var(--sans);
+    font-size:0.95rem;
+    color:var(--ink);
+    text-transform:none;
+    letter-spacing:0;
+    margin-top:6px;
+    font-weight:600;
+  }
+
+  .hero-scroll-cue{
+    position:absolute;
+    bottom:42px;
+    left:6vw;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    font-family:var(--mono);
+    font-size:0.68rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--line-strong);
+    opacity:0;
+    animation:riseIn 1s 1.4s forwards ease;
+  }
+  .scroll-line{
+    width:1px;
+    height:48px;
+    background:linear-gradient(to bottom, var(--ink-soft), transparent);
+    position:relative;
+    overflow:hidden;
+  }
+  .scroll-line::after{
+    content:"";
+    position:absolute;
+    top:-100%;
+    left:0;
+    width:100%;
+    height:50%;
+    background:var(--accent);
+    animation:dropDown 1.8s infinite ease-in-out;
+  }
+
+  /* large faint serif watermark letter in background of hero */
+  .hero-watermark{
+    position:absolute;
+    right:-2vw;
+    top:50%;
+    transform:translateY(-50%);
+    font-family:var(--serif);
+    font-size:min(46vw,640px);
+    line-height:1;
+    color:transparent;
+    -webkit-text-stroke:1px rgba(0,0,0,0.07);
+    z-index:0;
+    user-select:none;
+    pointer-events:none;
+  }
+
+  @keyframes riseIn{ to{opacity:1; transform:translateY(0);} }
+  @keyframes lineUp{ to{transform:translateY(0);} }
+  @keyframes dropDown{
+    0%{top:-100%;}
+    100%{top:100%;}
+  }
+
+  /* ============ SECTION SCAFFOLDING ============ */
+  section{
+    position:relative;
+    padding:140px 6vw;
+    z-index:1;
+  }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:24px;
+    margin-bottom:80px;
+  }
+  .section-num{
+    font-family:var(--mono);
+    font-size:0.75rem;
+    color:var(--line-strong);
+    letter-spacing:0.1em;
+  }
+  .section-title{
+    font-family:var(--serif);
+    font-size:clamp(2rem, 4vw, 3rem);
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .section-rule{
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(36px);
+    transition:opacity 0.9s cubic-bezier(.2,.7,.2,1), transform 0.9s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .reveal-delay-1.visible{transition-delay:0.1s;}
+  .reveal-delay-2.visible{transition-delay:0.2s;}
+  .reveal-delay-3.visible{transition-delay:0.3s;}
+
+  /* ============ ABOUT ============ */
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:8vw;
+    align-items:start;
+  }
+  .about-text p{
+    font-size:1.12rem;
+    line-height:1.9;
+    color:var(--ink-soft);
+    margin-bottom:26px;
+  }
+  .about-text p strong{
+    color:var(--ink);
+    font-weight:600;
+  }
+  .pull-quote{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.5rem;
+    line-height:1.5;
+    color:var(--ink);
+    border-left:2px solid var(--ink);
+    padding-left:28px;
+    margin:42px 0;
+  }
+
+  /* embossed info card - neumorphic */
+  .emboss-card{
+    background:var(--paper);
+    border-radius:20px;
+    padding:40px 34px;
+    box-shadow: var(--shadow-light), var(--shadow-dark);
+    position:relative;
+  }
+  .emboss-card .tag{
+    font-family:var(--mono);
+    font-size:0.68rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--line-strong);
+    margin-bottom:18px;
+    display:block;
+  }
+  .stat-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:18px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .stat-row:last-child{border-bottom:none;}
+  .stat-row .label{
+    font-size:0.92rem;
+    color:var(--ink-soft);
+  }
+  .stat-row .value{
+    font-family:var(--serif);
+    font-size:1.15rem;
+    font-weight:600;
+    color:var(--ink);
+    text-align:right;
+  }
+
+  /* ============ STRENGTHS / SKILLS ============ */
+  .strengths-wrap{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+    gap:26px;
+  }
+  .strength-card{
+    background:var(--paper);
+    border-radius:18px;
+    padding:32px 28px;
+    box-shadow: var(--shadow-light), var(--shadow-dark);
+    transition:transform 0.35s ease, box-shadow 0.35s ease;
+    cursor:default;
+  }
+  .strength-card:hover{
+    transform:translateY(-6px);
+    box-shadow: var(--shadow-light), var(--shadow-dark-strong);
+  }
+  .strength-card .num{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:var(--line-strong);
+    margin-bottom:22px;
+    display:block;
+  }
+  .strength-card h3{
+    font-family:var(--serif);
+    font-size:1.32rem;
+    margin-bottom:12px;
+    font-weight:600;
+  }
+  .strength-card p{
+    font-size:0.92rem;
+    line-height:1.65;
+    color:var(--ink-soft);
+  }
+
+  /* ============ INTERESTS (skewed, overlapping cards) ============ */
+  .interests-row{
+    display:flex;
+    gap:30px;
+    flex-wrap:wrap;
+    justify-content:center;
+    padding-top:20px;
+  }
+  .interest-card{
+    width:280px;
+    min-height:320px;
+    background:linear-gradient(160deg, var(--paper) 0%, var(--paper-2) 100%);
+    border-radius:22px;
+    padding:36px 30px;
+    box-shadow: var(--shadow-light), var(--shadow-dark);
+    transform:rotate(var(--tilt,0deg));
+    transition:transform 0.4s ease, box-shadow 0.4s ease;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .interest-card:nth-child(1){--tilt:-2.5deg;}
+  .interest-card:nth-child(2){--tilt:1.5deg;}
+  .interest-card:hover{
+    transform:rotate(0deg) translateY(-10px);
+    box-shadow: var(--shadow-light), var(--shadow-dark-strong);
+  }
+  .interest-card .icon-mark{
+    width:54px; height:54px;
+    border-radius:50%;
+    background:var(--paper);
+    box-shadow: var(--shadow-light), var(--shadow-dark);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:24px;
+  }
+  .interest-card h3{
+    font-family:var(--serif);
+    font-size:1.4rem;
+    margin-bottom:10px;
+  }
+  .interest-card p{
+    font-size:0.9rem;
+    color:var(--ink-soft);
+    line-height:1.6;
+  }
+  .interest-card .foot{
+    font-family:var(--mono);
+    font-size:0.66rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--line-strong);
+    margin-top:24px;
+  }
+
+  /* ============ EDUCATION TIMELINE ============ */
+  .timeline{
+    position:relative;
+    max-width:760px;
+    margin:0 auto;
+  }
+  .timeline::before{
+    content:"";
+    position:absolute;
+    left:11px;
+    top:8px;
+    bottom:8px;
+    width:1px;
+    background:var(--line);
+  }
+  .timeline-item{
+    position:relative;
+    padding-left:54px;
+    margin-bottom:54px;
+  }
+  .timeline-item:last-child{margin-bottom:0;}
+  .timeline-dot{
+    position:absolute;
+    left:0; top:4px;
+    width:23px; height:23px;
+    border-radius:50%;
+    background:var(--paper);
+    box-shadow: var(--shadow-light), var(--shadow-dark);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .timeline-dot::after{
+    content:"";
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--accent);
+  }
+  .timeline-item .when{
+    font-family:var(--mono);
+    font-size:0.7rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--line-strong);
+    margin-bottom:8px;
+  }
+  .timeline-item h3{
+    font-family:var(--serif);
+    font-size:1.5rem;
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  .timeline-item p{
+    color:var(--ink-soft);
+    font-size:0.96rem;
+    line-height:1.7;
+    max-width:560px;
+  }
+
+  /* ============ MARQUEE / SCROLLER ============ */
+  .marquee-wrap{
+    overflow:hidden;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:30px 0;
+    background:var(--paper-2);
+  }
+  .marquee{
+    display:flex;
+    width:max-content;
+    animation:scrollLeft 28s linear infinite;
+  }
+  .marquee span{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.6rem;
+    color:var(--ink-soft);
+    white-space:nowrap;
+    padding:0 3vw;
+    display:flex;
+    align-items:center;
+    gap:3vw;
+  }
+  .marquee span::after{
+    content:"—";
+    font-style:normal;
+    color:var(--line-strong);
+  }
+  @keyframes scrollLeft{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+
+  /* ============ CONTACT ============ */
+  .contact-section{
+    text-align:center;
+  }
+  .contact-section .section-head{justify-content:center;}
+  .contact-title{
+    font-family:var(--serif);
+    font-size:clamp(2.4rem, 6vw, 4.4rem);
+    font-weight:600;
+    line-height:1.08;
+    margin-bottom:30px;
+    letter-spacing:-0.01em;
+  }
+  .contact-title em{
+    font-style:italic;
+    color:var(--ink-soft);
+  }
+  .contact-sub{
+    color:var(--ink-soft);
+    font-size:1.05rem;
+    max-width:520px;
+    margin:0 auto 50px;
+    line-height:1.7;
+  }
+  .mail-button{
+    display:inline-flex;
+    align-items:center;
+    gap:16px;
+    padding:22px 40px;
+    border-radius:50px;
+    background:var(--paper);
+    box-shadow: var(--shadow-light), var(--shadow-dark);
+    font-family:var(--mono);
+    font-size:0.92rem;
+    letter-spacing:0.04em;
+    color:var(--ink);
+    transition:transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .mail-button:hover{
+    transform:translateY(-3px);
+    box-shadow: var(--shadow-light), var(--shadow-dark-strong);
+  }
+  .mail-button .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--accent);
+    transition:transform 0.3s ease;
+  }
+  .mail-button:hover .dot{
+    transform:scale(1.3);
+  }
+  .contact-meta{
+    display:flex;
+    justify-content:center;
+    gap:50px;
+    margin-top:64px;
+    flex-wrap:wrap;
+  }
+  .contact-meta div{
+    font-family:var(--mono);
+    font-size:0.68rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--line-strong);
+  }
+  .contact-meta strong{
+    display:block;
+    font-family:var(--sans);
+    font-size:0.95rem;
+    color:var(--ink);
+    text-transform:none;
+    letter-spacing:0;
+    margin-top:8px;
+    font-weight:600;
+  }
+
+  .copy-feedback{
+    display:inline-block;
+    margin-top:18px;
+    font-family:var(--mono);
+    font-size:0.74rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    opacity:0;
+    transition:opacity 0.4s ease;
+  }
+  .copy-feedback.show{opacity:1;}
+
+  /* ============ FOOTER ============ */
+  footer{
+    padding:44px 6vw;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-top:1px solid var(--line);
+    font-family:var(--mono);
+    font-size:0.7rem;
+    letter-spacing:0.08em;
+    color:var(--line-strong);
+    text-transform:uppercase;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  .to-top{
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--ink-soft);
+    transition:color 0.3s ease;
+  }
+  .to-top:hover{color:var(--accent);}
+
+  /* ============ OVERLAY MENU (mobile) ============ */
+  .overlay-menu{
+    position:fixed;
+    inset:0;
+    background:var(--paper);
+    z-index:550;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:center;
+    padding:0 10vw;
+    clip-path:circle(0% at 100% 0%);
+    transition:clip-path 0.6s cubic-bezier(.2,.8,.2,1);
+    pointer-events:none;
+  }
+  .overlay-menu.open{
+    clip-path:circle(150% at 100% 0%);
+    pointer-events:all;
+  }
+  .overlay-menu ul{
+    list-style:none;
+  }
+  .overlay-menu li{
+    margin-bottom:18px;
+    overflow:hidden;
+  }
+  .overlay-menu a{
+    font-family:var(--serif);
+    font-size:clamp(2.2rem,8vw,3.4rem);
+    font-weight:600;
+    color:var(--ink);
+    display:inline-block;
+    transform:translateY(100%);
+    opacity:0;
+    transition:transform 0.5s ease, opacity 0.5s ease, color 0.3s ease;
+  }
+  .overlay-menu a:hover{
+    color:var(--accent);
+  }
+  .overlay-menu.open a{
+    transform:translateY(0);
+    opacity:1;
+  }
+  .overlay-menu.open li:nth-child(1) a{transition-delay:0.15s;}
+  .overlay-menu.open li:nth-child(2) a{transition-delay:0.22s;}
+  .overlay-menu.open li:nth-child(3) a{transition-delay:0.29s;}
+  .overlay-menu.open li:nth-child(4) a{transition-delay:0.36s;}
+  .overlay-menu.open li:nth-child(5) a{transition-delay:0.43s;}
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:980px){
+    .about-grid{grid-template-columns:1fr; gap:60px;}
+    nav{display:none;}
+    .nav-toggle{display:flex;}
+  }
+
+  @media (max-width:680px){
+    section{padding:100px 7vw;}
+    .hero{padding:0 7vw;}
+    header{padding:18px 7vw;}
+    .section-head{margin-bottom:50px; flex-wrap:wrap;}
+    .hero-meta{gap:30px;}
+    .interest-card{width:100%;}
+    .contact-meta{gap:30px;}
+    .timeline-item{padding-left:44px;}
+    .hero-watermark{display:none;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+</style>
+</head>
+<body>
+
+<div class="progress-rail" id="progressRail"></div>
+
+<header id="siteHeader">
+  <div class="brand">MUSKAN<span>.</span></div>
+  <nav>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#strengths">Strengths</a></li>
+      <li><a href="#interests">Interests</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="nav-toggle" id="navToggle">
+    <span></span><span></span><span></span>
+  </div>
+</header>
+
+<div class="overlay-menu" id="overlayMenu">
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#strengths">Strengths</a></li>
+    <li><a href="#interests">Interests</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-watermark">M</div>
+  <div class="hero-eyebrow">Patna, Bihar — India</div>
+  <h1 class="hero-title">
+    <span class="line"><span>Muskan,</span></span>
+    <span class="line"><span class="accent">in business.</span></span>
+  </h1>
+  <p class="hero-sub">
+    BBA graduate from IIT Patna with a sociable, hardworking approach to
+    business, marketing, and people. I build relationships first, strategies
+    second — and I learn fast in between.
+  </p>
+  <div class="hero-meta">
+    <div>Based in<strong>Patna, Bihar</strong></div>
+    <div>Degree<strong>BBA, IIT Patna</strong></div>
+    <div>Focus<strong>Business &amp; Marketing</strong></div>
+  </div>
+  <div class="hero-scroll-cue">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="section-head reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">About</h2>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>
+        I'm <strong>Muskan</strong>, originally from Patna, Bihar. I completed
+        my <strong>Bachelor of Business Administration (BBA)</strong> at
+        IIT Patna, where my interest in business strategy, marketing, and
+        organisational growth really took shape.
+      </p>
+      <p class="pull-quote">
+        "I'd rather understand people first — strategy works best once you know who it's for."
+      </p>
+      <p>
+        I'm a sociable, hardworking, and kind-hearted person who genuinely
+        enjoys helping others and building relationships that last. Outside
+        of academics, I read novels and play badminton — both have quietly
+        taught me discipline, focus, and how to work well as part of a team.
+      </p>
+      <p>
+        Through my coursework and internship experience, I've developed a
+        real interest in understanding how businesses grow, how people make
+        decisions, and how the two connect. I'm always looking for the next
+        thing to learn.
+      </p>
+    </div>
+
+    <div class="emboss-card reveal reveal-delay-1">
+      <span class="tag">At a Glance</span>
+      <div class="stat-row">
+        <span class="label">Location</span>
+        <span class="value">Patna, Bihar</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Education</span>
+        <span class="value">BBA — IIT Patna</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Interests</span>
+        <span class="value">Reading, Badminton</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Focus Areas</span>
+        <span class="value">Business, Marketing,<br>Management</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Outlook</span>
+        <span class="value">Always learning</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARQUEE SCROLLER ============ -->
+<div class="marquee-wrap">
+  <div class="marquee" id="marqueeTrack">
+    <span>Communication<span>Adaptability</span>Teamwork<span>Leadership</span>Problem-Solving<span>Business Strategy</span>Communication<span>Adaptability</span>Teamwork<span>Leadership</span>Problem-Solving<span>Business Strategy</span></span>
+  </div>
+</div>
+
+<!-- ============ STRENGTHS ============ -->
+<section id="strengths">
+  <div class="section-head reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Strengths</h2>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="strengths-wrap">
+    <div class="strength-card reveal">
+      <span class="num">01</span>
+      <h3>Communication</h3>
+      <p>Comfortable speaking with people across teams and backgrounds — and just as comfortable listening first.</p>
+    </div>
+    <div class="strength-card reveal reveal-delay-1">
+      <span class="num">02</span>
+      <h3>Adaptability</h3>
+      <p>Settles into new environments and shifting priorities without losing focus on what matters.</p>
+    </div>
+    <div class="strength-card reveal reveal-delay-2">
+      <span class="num">03</span>
+      <h3>Teamwork</h3>
+      <p>Built on the badminton court and in group projects alike — knows how to play a supporting role or lead one.</p>
+    </div>
+    <div class="strength-card reveal reveal-delay-3">
+      <span class="num">04</span>
+      <h3>Leadership</h3>
+      <p>Leads with empathy first, taking the time to understand people before asking anything of them.</p>
+    </div>
+    <div class="strength-card reveal">
+      <span class="num">05</span>
+      <h3>Problem-Solving</h3>
+      <p>Approaches challenges methodically, breaking them down the way a good novel breaks down into chapters.</p>
+    </div>
+    <div class="strength-card reveal reveal-delay-1">
+      <span class="num">06</span>
+      <h3>Kindness</h3>
+      <p>A genuine, ongoing interest in helping others — colleagues, classmates, or otherwise.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INTERESTS ============ -->
+<section id="interests">
+  <div class="section-head reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Beyond Work</h2>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="interests-row">
+    <div class="interest-card reveal">
+      <div>
+        <div class="icon-mark">📖</div>
+        <h3>Reading Novels</h3>
+        <p>A steady habit that sharpens focus and gives me a quiet space to think — usually fiction, occasionally everything else.</p>
+      </div>
+      <div class="foot">Discipline · Perspective</div>
+    </div>
+    <div class="interest-card reveal reveal-delay-1">
+      <div>
+        <div class="icon-mark">🏸</div>
+        <h3>Badminton</h3>
+        <p>Years on the court taught me timing, patience, and how to stay composed when the pressure's on.</p>
+      </div>
+      <div class="foot">Focus · Teamwork</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EDUCATION ============ -->
+<section id="education">
+  <div class="section-head reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Education</h2>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="when">Bachelor of Business Administration</div>
+      <h3>Indian Institute of Technology, Patna</h3>
+      <p>
+        Completed my BBA with a focus on business, marketing, and management.
+        Built a strong foundation in organisational behaviour and strategy,
+        while developing communication and leadership skills through
+        coursework, group projects, and internship experience.
+      </p>
+    </div>
+    <div class="timeline-item reveal reveal-delay-1">
+      <div class="timeline-dot"></div>
+      <div class="when">Ongoing</div>
+      <h3>Continuous Learning</h3>
+      <p>
+        Still adding to the list — new skills in business strategy, marketing,
+        and management, picked up wherever I can find them.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="contact-section">
+  <div class="section-head reveal">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Get in Touch</h2>
+    <div class="section-rule"></div>
+  </div>
+
+  <h3 class="contact-title reveal">Let's start a <em>conversation.</em></h3>
+  <p class="contact-sub reveal reveal-delay-1">
+    Open to opportunities in business, marketing, and management.
+    If you'd like to connect, send me a note — I read every email myself.
+  </p>
+
+  <a href="mailto:muskan2509patna@gmail.com" class="mail-button reveal reveal-delay-2" id="mailBtn">
+    <span class="dot"></span>
+    muskan2509patna@gmail.com
+  </a>
+  <br>
+  <span class="copy-feedback" id="copyFeedback">Copied to clipboard</span>
+
+  <div class="contact-meta reveal reveal-delay-3">
+    <div>Location<strong>Patna, Bihar, India</strong></div>
+    <div>Email<strong>muskan2509patna@gmail.com</strong></div>
+    <div>Education<strong>BBA, IIT Patna</strong></div>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Muskan — Patna, Bihar</div>
+  <div class="to-top" id="toTop">Back to top ↑</div>
+</footer>
+
+<script>
+  // Scroll progress rail
+  const rail = document.getElementById('progressRail');
+  function updateRail(){
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    rail.style.width = scrolled + '%';
+  }
+  document.addEventListener('scroll', updateRail);
+  updateRail();
+
+  // Header background on scroll
+  const header = document.getElementById('siteHeader');
+  function toggleHeader(){
+    if(window.scrollY > 30){ header.classList.add('scrolled'); }
+    else{ header.classList.remove('scrolled'); }
+  }
+  document.addEventListener('scroll', toggleHeader);
+  toggleHeader();
+
+  // Mobile overlay nav
+  const navToggle = document.getElementById('navToggle');
+  const overlayMenu = document.getElementById('overlayMenu');
+  navToggle.addEventListener('click', () => {
+    overlayMenu.classList.toggle('open');
+    navToggle.classList.toggle('active');
+  });
+  overlayMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      overlayMenu.classList.remove('open');
+      navToggle.classList.remove('active');
+    });
+  });
+
+  // Scroll-reveal via IntersectionObserver
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Back to top
+  document.getElementById('toTop').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Copy email to clipboard feedback
+  const mailBtn = document.getElementById('mailBtn');
+  const copyFeedback = document.getElementById('copyFeedback');
+  mailBtn.addEventListener('click', (e) => {
+    if(navigator.clipboard){
+      navigator.clipboard.writeText('muskan2509patna@gmail.com').then(() => {
+        copyFeedback.classList.add('show');
+        setTimeout(() => copyFeedback.classList.remove('show'), 2000);
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
